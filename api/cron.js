@@ -59,7 +59,7 @@ export default async function handler(req, res){
     const issueBody = `# HITL Review ${new Date().toISOString().slice(0,10)}\n\nGenerated ${results.length} posts.\n\nReview output before publishing.`;
     const token = process.env.GITHUB_TOKEN;
     if(token){
-      await createGitHubIssue("mikewithoutthemechanics","RSS-CONTENT-ENGINE", token, `HITL Review ${new Date().toISOString().slice(0,10)}`, issueBody);
+      await createGitHubIssue("Agentcycoza","RSS-CONTENT-ENGINE", token, `HITL Review ${new Date().toISOString().slice(0,10)}`, issueBody);
     }
     res.status(200).json({ ok:true, count: results.length });
   }catch(e){
