@@ -1,0 +1,56 @@
+name: Daily RSS Content Engine
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # 09:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm install rss-parser
+
+      - name: Run fetch
+        run: node scripts/fetch-feeds.js
+
+      - name: Generate content
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+        run: node scripts/generate-content.js
+
+      - name: Validate output
+        run: node scripts/validate.js
+
+      - name: Create HITL issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('output/HITL_summary.md','utf8');
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `HITL Review ${new Date().toISOString().slice(0,10)}`,
+              body: summary
+            });
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-content
+          path: output/
