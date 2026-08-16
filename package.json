@@ -1,1 +1,1 @@
-{"name":"rss-content-engine","version":"1.0.0","type":"module","scripts":{"fetch":"node scripts/fetch-feeds.js","generate":"node scripts/generate-content.js","validate":"node scripts/validate.js"},"dependencies":{"rss-parser":"^3.13.0"}}
+{"name":"rss-content-engine","version":"1.0.0","type":"module","scripts":{"start":"echo running"}}
