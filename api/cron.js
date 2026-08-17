@@ -1,7 +1,7 @@
 import Parser from "rss-parser";
 const parser = new Parser();
 const FEEDS = [{ url: "https://feeds.feedburner.com/TheHackersNews", name: "The Hacker News" },{ url: "https://hnrss.org/frontpage", name: "Hacker News Front Page" },{ url: "https://www.infoq.com/feed/", name: "InfoQ" },{ url: "https://changelog.com/feed", name: "Changelog" },{ url: "https://css-tricks.com/feed/", name: "CSS-Tricks" }];
-function humanize(text){ let t = text.replace(/[—–]/g,". ").replace(/;/g,",").replace(/\s+/g," ").trim(); t = t.split(".").map(s=>s.trim()).filter(Boolean).slice(0,8).join(". ") + "."; return t; }
+function humanize(text){ let t = text.replace(/[â€”â€“]/g,". ").replace(/;/g,",").replace(/\s+/g," ").trim(); t = t.split(".").map(s=>s.trim()).filter(Boolean).slice(0,8).join(". ") + "."; return t; }
 function viralityScore(text){ let score=50; if(text.split(".")[0]?.length>10) score+=10; if(/\\d+%|\\d+\\/\\d+|CVE-|\\$/.test(text)) score+=10; if(/(not|never|always|wrong|myth|secret)/i.test(text)) score+=10; if(/[?!]/.test(text)) score+=5; return Math.max(0,Math.min(100,score)); }
 function platformMax(p){ const limits={x:280,bluesky:300,reddit:4000,facebook:63206,linkedin:3000,medium:3000,substack:3000,devto:3000}; return limits[p]||3000; }
 function tailor(text, platform){ const base=humanize(text); const max=platformMax(platform); if(platform==="x"||platform==="bluesky"){ const words=base.split(" "); let out=""; for(let i=0;i<words.length&&out.length<max;i++){ if(out.length+words[i].length+1>max) break; out+= (out?" ":"")+words[i]; } return out; } return base.slice(0,max); }
