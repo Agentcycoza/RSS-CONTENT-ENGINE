@@ -1,8 +1,8 @@
 import Parser from "rss-parser";
 const parser = new Parser({ headers: { "User-Agent": "Mozilla/5.0 RSS-Content-Engine" }, timeout: 10000 });
-const FEEDS = [{ url: "https://feeds.feedburner.com/TheHackersNews", name: "The Hacker News" },{ url: "https://hnrss.org/frontpage", name: "Hacker News Front Page" },{ url: "https://www.infoq.com/feed/", name: "InfoQ" },{ url: "https://changelog.com/feed", name: "Changelog" },{ url: "https://css-tricks.com/feed/", name: "CSS-Tricks" }];
-const VIRALITY_THRESHOLD = 60;
-function humanize(text){ try{ let t = String(text||"").replace(/[—–]/g,". ").replace(/;/g,",").replace(/\s+/g," ").trim(); t = t.split(".").map(s=>s.trim()).filter(Boolean).slice(0,8).join(". ")+"."; return t; }catch{return "";} }
+const FEEDS = [{ url: "https://rsshub.app/news/tech/thehackernews", name: "The Hacker News" },{ url: "https://rsshub.app/news/hackernews", name: "Hacker News Front Page" },{ url: "https://rsshub.app/infoq", name: "InfoQ" },{ url: "https://rsshub.app/changelog", name: "Changelog" },{ url: "https://rsshub.app/css-tricks", name: "CSS-Tricks" }];
+const VIRALITY_THRESHOLD = 75;
+function humanize(text){ try{ let t = String(text||"").replace(/[ï¿½ï¿½]/g,". ").replace(/;/g,",").replace(/\s+/g," ").trim(); t = t.split(".").map(s=>s.trim()).filter(Boolean).slice(0,8).join(". ")+"."; return t; }catch{return "";} }
 function platformMax(p){ const limits={x:280,bluesky:300,reddit:4000,facebook:63206,linkedin:3000,medium:3000,substack:3000,devto:3000}; return limits[p]||3000; }
 function tailor(text, platform){ try{ const base=humanize(text); const max=platformMax(platform); if(platform==="x"||platform==="bluesky"){ const words=base.split(" "); let out=""; for(let i=0;i<words.length&&out.length<max;i++){ if(out.length+words[i].length+1>max) break; out+= (out?" ":"")+words[i]; } return out; } return base.slice(0,max); }catch{return "";} }
 function hashtagsFor(platform){ const map={ x:["#TechNews","#CyberSecurity","#DevOps"], linkedin:["#Technology","#Leadership","#Innovation"], reddit:["r/technology","r/devops"], facebook:["#Tech","#Security"], medium:["#Technology","#Programming"], substack:["#TechNewsletter"], devto:["#webdev","#programming"], bluesky:["#tech","#news"] }; return (map[platform]||[]).join(" "); }

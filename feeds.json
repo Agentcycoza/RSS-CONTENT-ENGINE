@@ -1,7 +1,7 @@
 [
-  { "url": "https://feeds.feedburner.com/TheHackersNews", "name": "The Hacker News" },
-  { "url": "https://hnrss.org/frontpage", "name": "Hacker News Front Page" },
-  { "url": "https://www.infoq.com/feed/", "name": "InfoQ" },
-  { "url": "https://changelog.com/feed", "name": "Changelog" },
-  { "url": "https://css-tricks.com/feed/", "name": "CSS-Tricks" }
+  { "url": "https://rsshub.app/news/tech/thehackernews", "name": "The Hacker News" },
+  { "url": "https://rsshub.app/news/hackernews", "name": "Hacker News Front Page" },
+  { "url": "https://rsshub.app/infoq", "name": "InfoQ" },
+  { "url": "https://rsshub.app/changelog", "name": "Changelog" },
+  { "url": "https://rsshub.app/css-tricks", "name": "CSS-Tricks" }
 ]
